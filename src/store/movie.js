@@ -6,7 +6,9 @@ export default {
     namespaced: true, // module화 명시
 
     state: () => ({
-        movies: []   
+        movies: [],
+        message: '영화명을 입력해주세요!',
+        loading: false
     }), // data 
     getters: {
         
@@ -15,7 +17,7 @@ export default {
         updateState(state, payload) {
             // ['movies', 'message', 'loading'] 
             // mutations으로 부터 호출, payload로 전달된 값 state에 입력
-            Object.keys(payload).forEach(key=> {
+            Object.keys(payload).forEach(key=> { 
                 state[key] = payload[key]
             })
         },
@@ -26,6 +28,16 @@ export default {
     actions: {
         // context 를 통해 접근 가능
         async searchMovies({ state, commit }, payload) {
+            // 최초 loading이 false
+            if(state.loading ) {
+                return
+            }
+
+            commit('updateState', {
+                message: '',
+                loading: true
+            })
+
             try {
                 const OMDB_API_KEY = '25b23d5b'
 
@@ -74,16 +86,48 @@ export default {
                     movies: [], 
                     message: message
                 })
+            } finally {
+                commit('updateState', {
+                    loading: false
+                })
+            }
+        },
+        async searchMovieWithId({ state, commit }, payload) {
+            if(state.loading) return
+
+            commit('updateState', {
+                theMovie: {}, 
+                loading: true,
+            })
+
+            try {
+                const res = await _fetchMovie(payload)
+                commit('updateState', {
+                    theMovie: res.data
+                }) 
+
+            } catch(error) {
+                commit('updateState', {
+                    theMovie: {}
+                })
+
+            } finally {
+                commit('updateState', {
+                    loading: false
+                })
+
             }
         }
-
     }, // 비동기 동작 methods
 }
 
 function _fetchMovie(payload) {
-    const { title, type, year, page } = payload
+    const { title, type, year, page, id } = payload
     const OMDB_API_KEY = '25b23d5b'
-    const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&type=${type}&s=${title}&y=${year}&page=${page}`
+
+    const url = id ?
+        `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
+        : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&type=${type}&s=${title}&y=${year}&page=${page}`
 
     // 비동기 & 콜백 동작
     return new Promise((resolve, reject) => {

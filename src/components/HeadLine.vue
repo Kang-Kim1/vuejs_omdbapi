@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <h1>
-      <span>OMDb API</span> <br />
-      THE OPEN MOVIE DATABASE <br />
+      <span>탈출 프로젝트</span> <br />
+      OPEN DATABASE for ESCAPE <br />
     </h1>
     <p>
-      KKM - REST API Practice<br />
+      탈출을 위한 토이 프로젝트입니다.<br />
     </p>
   </div>
 </template>

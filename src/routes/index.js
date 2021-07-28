@@ -4,7 +4,6 @@ import About from './About';
 import Movie from './Movie';
 
 export default createRouter({
-    
     // History & Hash Mode 중 선택
     // URL/#/API 형태
     history: createWebHashHistory(),
@@ -20,7 +19,8 @@ export default createRouter({
             component: About
         },
         {
-            path: '/movie',
+            // : Keyword를 붙여 parameter 정의
+            path: '/movie/:id',
             component: Movie
         },
     ]

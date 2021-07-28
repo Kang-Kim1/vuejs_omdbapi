@@ -37,24 +37,18 @@ export default {
                 },
                 {
                     name: 'Movie',
-                    href: '/movie'
+                    href: '/movie/tt2294629'
                 },
                 {
                     name: 'About',
                     href: '/about'
                 },
-                
             ]
-
-
         }
-
-
     }
 }
 
 </script>
-
 <style lang="scss" scoped>
     header {
         height: 70px;
